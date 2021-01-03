@@ -77,6 +77,8 @@
 															<i class="fas fa-bars"></i>
 														</button>
 														<div class="dropdown-menu" role="menu">
+															<a onclick="setAdmin('<%= usersList[prop].username %>')"
+																class="dropdown-item">Set Admin</a>
 															<a onclick="setTeacher('<%= usersList[prop].username %>')"
 																class="dropdown-item">Set Teacher</a>
 															<a href="/users/user-detail/edit/<%= usersList[prop].username %>"
@@ -182,6 +184,84 @@
 								<!-- /.card-body -->
 							</div>
 							<!-- /.card -->
+
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title">Admin with default features</h3>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="example3" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>Email</th>
+												<th>Username</th>
+												<th>First Name</th>
+												<th>Last Name</th>
+												<th>Phone</th>
+												<th>Address</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody id='adminList'>
+											<% for (var prop in usersList ) { %>
+												<% if (usersList[prop].admin) { %>
+													<tr id="admin-<%= usersList[prop].username %>">
+														<td>
+															<%= usersList[prop].email %>
+														</td>
+														<td>
+															<a
+																href="/users/user-detail/<%= usersList[prop].username %>">
+																<%= usersList[prop].username %>
+															</a>
+														</td>
+														<td>
+															<%= usersList[prop].firstName %>
+														</td>
+														<td>
+															<%= usersList[prop].lastName %>
+														</td>
+														<td>
+															<%= usersList[prop].phone %>
+														</td>
+														<td>
+															<%= usersList[prop].address %>
+														</td>
+														<td>
+															<button type="button" class="btn btn-sm dropdown-toggle"
+																data-toggle="dropdown" data-offset="-52"
+																aria-expanded="false">
+																<i class="fas fa-bars"></i>
+															</button>
+															<div class="dropdown-menu" role="menu">
+																<a onclick="unsetAdmin('<%= usersList[prop].username %>')"
+																	class="dropdown-item">Unset Admin</a>
+																<a href="/users/user-detail/edit/<%= usersList[prop].username %>"
+																	class="dropdown-item">Edit user</a>
+																<a onclick="popUpDeleteUser('<%= usersList[prop].username %>')"
+																	class="dropdown-item">Delete user</a>
+															</div>
+														</td>
+													</tr>
+													<% } } %>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Email</th>
+												<th>Username</th>
+												<th>First Name</th>
+												<th>Last Name</th>
+												<th>Phone</th>
+												<th>Address</th>
+												<th>Actions</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
 						</div>
 						<!-- /.col -->
 					</div>
@@ -223,108 +303,7 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="/js/demo.js"></script>
 	<!-- Page specific script -->
-	<script>
-		$(function () {
-			$("#example1").DataTable({
-				"responsive": true, "lengthChange": false, "autoWidth": false,
-				"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-			}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-			$('#example2').DataTable({
-				"paging": true,
-				"lengthChange": false,
-				"searching": false,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false,
-				"responsive": true,
-			});
-		});
-	</script>
-	<script>
-		function popUpDeleteUser(username) {
-			console.log(username)
-			const data = {
-				username: username
-			}
-			var r = confirm("Do you want to delete a user ?");
-			if (r == true) {
-				$.ajax({
-					url: "/users/user-detail/delete/" + username,
-					method: "DELETE",
-					data: data,
-					success: (res) => {
-						console.log(res)
-						document.getElementById(username).remove();
-						document.getElementById("teacher-" + username).remove();
-					}
-				})
-			} else {
-			}
-		};
-	</script>
-	<script>
-		function setTeacher(username) {
-			console.log(username)
-			const data = {
-				username: username
-			}
-			var r = confirm("Do you want to set teacher ?");
-			if (r == true) {
-				$.ajax({
-					url: "/users/user-detail/set-teacher/" + username,
-					method: "post",
-					data: data,
-					success: (res) => {
-						console.log(res)
-						if (res != "User had been teacher") {
-							$('#teachersList').prepend(
-								"<tr id='teacher-" + res.username + "'>\
-								<td> " + res.email + " </td>\
-								<td><a href='/users/user-detail/" + res.username + "'>\
-									" + res.username + "</a></td>\
-								<td> " + res.firstName + " </td>\
-								<td> " + res.lastName + " </td>\
-								<td> " + res.phone + " </td>\
-								<td> " + res.address + " </td>\
-								<td> <button type='button' class='btn btn-sm dropdown-toggle' \
-									data-toggle='dropdown' data-offset='-52' aria-expanded='false'>\
-									<i class='fas fa-bars'></i> \
-									</button> <div class='dropdown-menu' role='menu'> \
-									<a onclick='unsetTeacher('" + res.username + "')'\
-										class='dropdown-item'>Unset Teacher</a>\
-									<a href='/users/user-detail/edit/" + res.username + "'\
-										class='dropdown-item'>Edit user</a>\
-									<a onclick='popUpDeleteUser('" + res.username + "')'\
-										class='dropdown-item'>Delete user</a></div></td></tr>"
-							)
-						}
-					}
-				})
-			} else {
-			}
-		};
-	</script>
-	<script>
-		function unsetTeacher(username) {
-			console.log(username)
-			const data = {
-				username: username
-			}
-			var r = confirm("Do you want to unset teacher ?");
-			if (r == true) {
-				$.ajax({
-					url: "/users/user-detail/unset-teacher/" + username,
-					method: "post",
-					data: data,
-					success: (res) => {
-						console.log(res)
-						document.getElementById("teacher-" + username).remove();
-					}
-				})
-			} else {
-			}
-		};
-	</script>
+	<script src="/js/users.js"></script>
 	<script>
 		$('#usersSidebar').addClass('active');
 	</script>

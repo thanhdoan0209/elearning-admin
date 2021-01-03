@@ -259,6 +259,35 @@ userController.postSetTeacher = async (req, res, next) => {
     }
 }
 
+userController.postSetAdmin = async (req, res, next) => {
+    const username = req.body.username;
+    console.log(username)
+    try {
+
+        let userDetail = await user.findOne({
+            username: username
+        })
+        if (userDetail.admin) {
+            res.send("User had been admin")
+        } else {
+            userDetail.admin = true;
+            const userResult = await userDetail.save()
+            console.log(userResult)
+            res.send({
+                username: userResult.username,
+                email: userResult.email,
+                firstName: userResult.firstName,
+                lastName: userResult.lastName,
+                phone: userResult.phone,
+                address: userResult.address
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 userController.postUnsetTeacher = async (req, res, next) => {
     const username = req.body.username;
     console.log(username)
@@ -281,6 +310,24 @@ userController.postUnsetTeacher = async (req, res, next) => {
         const userResult = await userDetail.save()
         console.log(userResult)
         res.send("Unset teacher successfully")
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+userController.postUnsetAdmin = async (req, res, next) => {
+    const username = req.body.username;
+    console.log(username)
+    try {
+
+        let userDetail = await user.findOne({
+            username: username
+        })
+        userDetail.admin = false;
+        const userResult = await userDetail.save()
+        console.log(userResult)
+        res.send("Unset admin successfully")
     } catch (err) {
         console.log(err);
         throw err;

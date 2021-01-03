@@ -394,4 +394,27 @@ classController.deleteClass = async (req, res, next) => {
         throw err;
     }
 }
+
+classController.deleteMemberInClass = async (req, res, next) => {
+    const data = req.body;
+    console.log(data)
+    try {
+        let classDetail = await classes.findOne({
+            classCode: data.classCode
+        });
+        if (data.member == "teacher") {
+            const j = classDetail.classTeachers.indexOf(data.username)
+            classDetail.classTeachers.splice(j, 1)
+        } else {
+            const j = classDetail.classStudents.indexOf(data.username)
+            classDetail.classStudents.splice(j, 1)
+        }
+        const classResult = await classDetail.save()
+        console.log(classResult)
+        res.send("Member deleted successfully")
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
 module.exports = classController;

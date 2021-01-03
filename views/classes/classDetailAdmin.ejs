@@ -178,32 +178,35 @@
 
                     <div class="tab-pane" id="members">
                       <!-- Post -->
-                      <h3>Teachers</h3>
+                      <h3>Teachers</h3> <br>
                       <% for (var prop in classDetail.classTeachers ) { %>
-                        <div class="user-block">
-                          <img class="img-circle img-bordered-sm" src="/img/avatar-370.png" alt="user image">
-                          <span class="username">
-                            <a href="/users/user-detail/<%= classDetail.classTeachers[prop] %>">
-                              <%= classDetail.classTeachers[prop] %> &emsp; &emsp; &emsp;
-                            </a>
-                            <label></label>
-                          </span>
-                          <span class="description">
-                            <br>
-                          </span>
+                        <div class="post" id='<%= classDetail.classTeachers[prop] %>'>
+                          <div class="user-block">
+                            <img class="img-circle img-bordered-sm" src="/img/avatar-370.png" alt="user image">
+                            <span class="username">
+                              <a href="/users/user-detail/<%= classDetail.classTeachers[prop] %>">
+                                <%= classDetail.classTeachers[prop] %>
+                              </a>
+                            </span>
+                            <a onclick="deleteMemberInClass('teacher','<%= classDetail.classTeachers[prop]%>','<%= classDetail.classCode %>')"
+                              class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                          </div> <br> <br>
                         </div>
                         <% } %>
-                          <br> <br>
-                          <h3>Students</h3>
+                          <h3>Students</h3> <br>
                           <% for (var prop in classDetail.classStudents ) { %>
-                            <div class="user-block">
-                              <img class="img-circle img-bordered-sm" src="/img/avatar-370.png" alt="user image">
-                              <span class="username">
-                                <a href="/users/user-detail/<%= classDetail.classStudents[prop] %>">
-                                  <%= classDetail.classStudents[prop] %>
-                                </a>
-                              </span>
-                            </div> <br> <br>
+                            <div class="post" id='<%= classDetail.classStudents[prop] %>'>
+                              <div class="user-block">
+                                <img class="img-circle img-bordered-sm" src="/img/avatar-370.png" alt="user image">
+                                <span class="username">
+                                  <a href="/users/user-detail/<%= classDetail.classStudents[prop] %>">
+                                    <%= classDetail.classStudents[prop] %>
+                                  </a>
+                                </span>
+                                <a onclick="deleteMemberInClass('student','<%= classDetail.classStudents[prop] %>','<%= classDetail.classCode %>')"
+                                  class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                              </div> <br>
+                            </div>
                             <% } %>
 
                     </div>
@@ -293,6 +296,29 @@
         })
       }
     }
+  </script>
+  <script>
+    function deleteMemberInClass(member, username, classCode) {
+      console.log(username)
+      const data = {
+        member: member,
+        classCode: classCode,
+        username: username
+      }
+      var r = confirm("Do you want to delete a student from this class?");
+      if (r == true) {
+        $.ajax({
+          url: "/classes/class-detail/" + classCode + "/delete-member/" + username,
+          method: "DELETE",
+          data: data,
+          success: (res) => {
+            console.log(res)
+            document.getElementById(username).remove();
+          }
+        })
+      } else {
+      }
+    };
   </script>
 </body>
 

@@ -52,4 +52,7 @@ router.get('/user', async (req, res, next) => {
 
 router.delete('/class-detail/delete/:classcode', classController.deleteClass)
 
+router.delete('/class-detail/:classcode/delete-member/:username', classController.deleteMemberInClass)
+
+
 module.exports = router;

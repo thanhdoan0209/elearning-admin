@@ -27,7 +27,11 @@ router.post('/user-detail/edit/:username', userController.postEditUserDetail);
 
 router.post('/user-detail/set-teacher/:username', userController.postSetTeacher);
 
+router.post('/user-detail/set-admin/:username', userController.postSetAdmin);
+
 router.post('/user-detail/unset-teacher/:username', userController.postUnsetTeacher);
+
+router.post('/user-detail/unset-admin/:username', userController.postUnsetAdmin);
 
 router.delete('/user-detail/delete/:username', userController.deleteUser)
 

@@ -21,6 +21,11 @@ passport.use('login', new LocalStrategy({
                 return done(null, false,
                     console.log('message', 'Invalid Password'));
             }
+            if (!user.admin) {
+                console.log('User not admin with username' + username);
+                return done(null, false,
+                    console.log('message', 'User not admin'))
+            }
             // User and password both match, return user from 
             // done method which will be treated like success
             console.log(user)
