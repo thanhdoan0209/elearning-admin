@@ -180,16 +180,9 @@ userController.postInviteUser = async (req, res, next) => {
             classDetail.classStudents.unshift(userDetail.username)
             const newClass = await classDetail.save()
             console.log(newClass)
-
-            const resultUser = {
-                username: userDetail.username,
-                email: userDetail.email,
-                firstName: userDetail.firstName,
-                lastName: userDetail.lastName
-            }
-            res.send(resultUser)
+            res.send("User with username " + data.username + " invite successfully")
         } else {
-            res.send("user-existed")
+            res.send("User with username " + data.username + " existed")
         }
     } catch (err) {
         console.log(err);
