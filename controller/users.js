@@ -60,7 +60,12 @@ userController.getUserDetail = async (req, res, next) => {
         })
         console.log(username)
         console.log(listClasses)
-        res.render('../views/users/userDetail', {
+        // res.render('../views/users/userDetail', {
+        //     userDetail: userDetail,
+        //     classesList: listClasses
+        // })
+        res.render('layout', {
+            contentPage: '../views/users/userDetail',
             userDetail: userDetail,
             classesList: listClasses
         })

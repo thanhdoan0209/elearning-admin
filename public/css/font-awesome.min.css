@@ -16,6 +16,11 @@ text-rendering:auto;
 -webkit-font-smoothing:antialiased;
 -moz-osx-font-smoothing:grayscale
 }
+.reply-comment {
+    margin-left:20px;
+    max-height: 400px; 
+    overflow: auto;
+  }
 .fa-lg
 {
 font-size:1.33333333em;

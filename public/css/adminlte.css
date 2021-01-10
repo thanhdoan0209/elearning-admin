@@ -2572,7 +2572,11 @@ fieldset:disabled a.btn {
   background-color: #0069d9;
   border-color: #0062cc;
 }
-
+.reply-comment {
+  margin-left:20px;
+  max-height: 400px; 
+  overflow: auto;
+}
 .btn-primary:focus, .btn-primary.focus {
   color: #fff;
   background-color: #0069d9;
